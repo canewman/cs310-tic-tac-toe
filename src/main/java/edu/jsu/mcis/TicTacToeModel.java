@@ -76,6 +76,13 @@ public class TicTacToeModel {
         /* Initialize board by filling every square with empty marks */
         
         // INSERT YOUR CODE HERE
+        for(int row = 0; row < width; row++)
+        {
+            for(int col = 0; col < width; col++)
+            {
+                board[row][col] = Mark.EMPTY;
+            }
+        }
         
     }
 	
@@ -88,8 +95,15 @@ public class TicTacToeModel {
            other player before returning TRUE.  Otherwise, return FALSE. */
         
         // INSERT YOUR CODE HERE
-        
-        return false; // remove this line later!
+        if((isValidSquare(row, col) == true) && (isSquareMarked(row, col) == false) )
+        {
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
         
     }
 	
@@ -98,9 +112,18 @@ public class TicTacToeModel {
         /* Return TRUE if the specified location is within the bounds of the board */
         
         // INSERT YOUR CODE HERE
-
-        return false; // remove this line later!
-        
+        if(row > this.width || col > this.width)
+        {
+            return false;
+        }
+        if(row < this.width || col < this.width)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        } 
     }
 	
     private boolean isSquareMarked(int row, int col) {
@@ -108,8 +131,14 @@ public class TicTacToeModel {
         /* Return TRUE if the square at specified location is marked */
         
         // INSERT YOUR CODE HERE
-
-        return false; // remove this line later!
+        if(board[row][col] == Mark.EMPTY)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }       
             
     }
 	
@@ -118,8 +147,7 @@ public class TicTacToeModel {
         /* Return the mark from the square at the specified location */
         
         // INSERT YOUR CODE HERE
-
-        return null; // remove this line later!
+        return board[row][col]; 
             
     }
 	
