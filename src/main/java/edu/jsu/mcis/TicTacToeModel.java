@@ -37,7 +37,8 @@ public class TicTacToeModel {
         X("X"), 
         O("O"), 
         TIE("TIE"), 
-        NONE("NONE");
+        NONE("NONE"),
+        ERROR("ERROR");
 
         private String message;
         
@@ -95,9 +96,24 @@ public class TicTacToeModel {
            other player before returning TRUE.  Otherwise, return FALSE. */
         
         // INSERT YOUR CODE HERE
-        if((isValidSquare(row, col) == true) && (isSquareMarked(row, col) == false) )
+        if((isValidSquare(row, col) == true) && (isSquareMarked(row, col) == false))
         {
-
+            if(isXTurn())
+            {            
+                board[row][col] = Mark.X;
+            }
+            else
+            {
+                board[row][col] = Mark.O;
+            }
+            if(this.xTurn)      //change turn
+            {
+                this.xTurn = false;
+            }
+            else
+            {
+                this.xTurn = true;
+            }
             return true;
         }
         else
@@ -112,11 +128,11 @@ public class TicTacToeModel {
         /* Return TRUE if the specified location is within the bounds of the board */
         
         // INSERT YOUR CODE HERE
-        if(row > this.width || col > this.width)
+        if((row > width-1) || (col > width-1))
         {
             return false;
         }
-        if(row < this.width || col < this.width)
+        else if((row < 0) || (col < 0))
         {
             return false;
         }
@@ -158,9 +174,21 @@ public class TicTacToeModel {
            value */
         
         // INSERT YOUR CODE HERE
-
-        return null; // remove this line later!
-        
+       
+       
+        if(isMarkWin(Mark.O))
+        {
+            return Result.O;
+        }
+        else if(isMarkWin(Mark.X))
+        {
+            return Result.X;
+        }
+        else if(isTie())
+        {
+            return Result.TIE;
+        }       
+        else return Result.NONE;
     }
 	
     private boolean isMarkWin(Mark mark) {
@@ -169,8 +197,119 @@ public class TicTacToeModel {
            winner */
         
         // INSERT YOUR CODE HERE
+        boolean winnerCheckRow = true; 
+        boolean checkHolderRow[] = new boolean[width];
+        boolean winnerCheckButSmallerRow = true;
+        
+        boolean winnerCheckColumn = true;
+        boolean checkHolderColumn[] = new boolean[width];
+        boolean winnerCheckButSmallerColumn = true;
+        
+        boolean winnerCheckDiag = true;
+        boolean checkHolderDiag[] = new boolean[width];
+        boolean winnerCheckButSmallerDiag = true;        
+      
+        for(int i = 0; i < width; i++)/*---------------ROW CHECKER---------------*/
+        {
+            
+            for (int k = 0; k < width; k++)//checks if previous letter equals 
+            {                                     //next letter and stores those bools into array                     
+                if(board[i][k].equals(mark) == false)  {
+                    winnerCheckRow = false;			
+                }                
+                checkHolderRow[k] = winnerCheckRow;
+                winnerCheckRow = true;
+            }
+                                
+           for (boolean n : checkHolderRow) {
+                if (false == n) {
+                   winnerCheckButSmallerRow = false;
+                }                      
+             }
+            if (winnerCheckButSmallerRow)
+            {               
+                    return true;                
+            }
+            winnerCheckButSmallerRow = true;
+        }
+        
+         for(int i = 0; i < width; i++)/*--------------COLUMN CHECKER--------------*/
+        {
+            
+            for (int k = 0; k < width; k++)//checks if previous letter equals 
+            {                                     //next letter and stores those bools into array                     
+                if(board[k][i].equals(mark) == false)  {
+                    winnerCheckColumn = false;			
+                }   
+                checkHolderColumn[k] = winnerCheckColumn;
+                winnerCheckColumn = true;
+            }
+                                
+           for (boolean n : checkHolderColumn) {
+                if (false == n) {
+                   winnerCheckButSmallerColumn = false;
+                }                      
+             }
+            if (winnerCheckButSmallerColumn)
+            {                
+                    return true;                
+            }
+            winnerCheckButSmallerColumn = true;
+        }
+        
+                            /*-----------------DIAGONAL CHECKER top2bot----------------*/
+        int x = 0;
+        int y = 0;
+         for(int k = 0; k < width; k++)
+        {
+            if(board[x][y].equals(mark) == false)
+            {
+                winnerCheckDiag = false;
+            }
+            checkHolderDiag[y] = winnerCheckDiag;
+            winnerCheckDiag = true;
+            x++;
+            y++;
+        }     
+         
+        for (boolean n : checkHolderDiag) {
+             if (false == n) {
+                winnerCheckButSmallerDiag = false;
+             }                      
+          }
+         if (winnerCheckButSmallerDiag)
+         {                
+                 return true;                
+         }
+         winnerCheckButSmallerDiag = true;
 
-        return false; // remove this line later!
+                              /*-----------------DIAGONAL CHECKER bot2top----------------*/
+        x = width-1;
+        y = 0;
+        for (int i = 0; i < width; i++)
+        {
+           if(board[x][y].equals(mark) == false)
+           {
+               winnerCheckDiag = false;
+           }
+           checkHolderDiag[y] = winnerCheckDiag;
+           winnerCheckDiag = true;
+           x--;
+           y++;
+        }                            
+       for (boolean n : checkHolderDiag) {
+            if (false == n) {
+               winnerCheckButSmallerDiag = false;
+            }                      
+         }
+        if (winnerCheckButSmallerDiag)
+        {                
+                return true;                
+        }
+        winnerCheckButSmallerDiag = true;     
+
+
+        return false; 
 
     }
 	
@@ -179,8 +318,20 @@ public class TicTacToeModel {
         /* Check the squares of the board to see if the game is a tie */
         
         // INSERT YOUR CODE HERE
+        boolean tie = true;
+        
+        for(int i = 0; i < width; i++)
+        {
+            for(int k = 0; k < width; k++)
+            {
+                if(board[i][k] == Mark.EMPTY)
+                {
+                    tie = false;
+                }                   
+            }
+        }
 
-        return false; // remove this line later!
+        return tie; 
         
     }
 
@@ -209,13 +360,29 @@ public class TicTacToeModel {
     }
     
     @Override
-    public String toString() {
-        
-        StringBuilder output = new StringBuilder("  ");
+    public String toString() {        
         
         /* Output the board contents as a string (see examples) */
         
         // INSERT YOUR CODE HERE
+        //String s = "\n\n  012\n\n0 ---\n1 ---\n2 ---\n\n";
+        StringBuilder output = new StringBuilder("");           //This is using StringBuiler
+        output.append("\n\n ");
+        for(int k = 0; k < width; k++)
+        {
+            output.append(k);
+        }
+        output.append("\n");
+        for(int i =0; i < width; i++)
+        {
+            output.append(i + " ");
+            for(int k = 0; k < width; k++)
+            {
+                output.append(board[i][k]);
+            }
+            output.append("\n");
+        }
+        output.append("\n");        
         
         return output.toString();
         

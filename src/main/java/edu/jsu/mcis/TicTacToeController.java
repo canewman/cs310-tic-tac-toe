@@ -30,7 +30,13 @@ public class TicTacToeController {
         while(model.isGameover() != true)
         {
             view.showBoard(model.toString());
-            view.getNextMove(xTurn);
+            TicTacToeMove move = view.getNextMove(xTurn);
+            boolean valid = (model.makeMark(move.getRow(), move.getCol()));
+            if(valid == false)
+            {
+                view.showInputError();
+            }
+            
             
                        
         }

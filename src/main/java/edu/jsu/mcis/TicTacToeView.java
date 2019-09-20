@@ -22,8 +22,14 @@ public class TicTacToeView {
            Return as a TicTacToeMove object. */
         
         // INSERT YOUR CODE HERE
+        //String turn;
+        System.out.println("Enter your move as row space column");
+        String turnInput = keyboard.nextLine();
+        String[] turn = turnInput.split(" ");
+        
+        TicTacToeMove move = new TicTacToeMove(Integer.parseInt(turn[0]), Integer.parseInt(turn[1]));
 
-        return null; // remove this line later!
+        return move;
 
     }
 
@@ -41,7 +47,7 @@ public class TicTacToeView {
     
     public void showBoard(String board) {
         
-        System.out.println("\n\n" + board);
+        System.out.println(board);
         
     }
 	
