@@ -364,9 +364,8 @@ public class TicTacToeModel {
         
         /* Output the board contents as a string (see examples) */
         
-        // INSERT YOUR CODE HERE
-        //String s = "\n\n  012\n\n0 ---\n1 ---\n2 ---\n\n";
-        StringBuilder output = new StringBuilder("");           //This is using StringBuiler
+        // INSERT YOUR CODE HERE       
+        StringBuilder output = new StringBuilder("");          
         output.append("\n\n ");
         for(int k = 0; k < width; k++)
         {
