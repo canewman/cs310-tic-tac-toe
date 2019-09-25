@@ -47,13 +47,13 @@ public class TicTacToeView extends JPanel {
         /* Refresh the GUI with updated data from the Model (via the Controller) */
         // INSERT YOUR CODE HERE
 
-        for(int row = 0; row < board.length; row++)
+        for(int row = 0; row < board[0].length; row++)
         {
-            for(int column = 0; row < board.length; row++)
+            for(int column = 0; column < board[0].length; column++)
             {               
                 board[row][column].setText(controller.getMarkAsString(row, column));
             }
-        }        
+        }       
 
     }
     
@@ -62,9 +62,9 @@ public class TicTacToeView extends JPanel {
         /* Disable buttons (to disallow input after game is over) */
     
         // INSERT YOUR CODE HERE
-        for(int row = 0; row < board.length; row++)
+        for(int row = 0; row < board[0].length; row++)
         {
-            for(int column = 0; row < board.length; row++)
+            for(int column = 0; column < board[0].length; column++)
             {               
                 board[row][column].setEnabled(false);
             }
